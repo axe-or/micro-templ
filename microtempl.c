@@ -112,6 +112,14 @@ void dict_init(Dict* d){
 	__builtin_memset(&d.values[0], 0, sizeof(String) * DICT_KEY_COUNT);
 }
 
+bool str_eq(String a, String b){
+	if(a.len != b.len){ return false; }
+	for(int i = 0; i < a.len; i++){
+		if(a.data[i] != b.data[i]){ return false; }
+	}
+	return true;
+}
+
 String dict_get(Dict const* d, String key){}
 
 String dict_set(Dict* d, String key, String value){}
