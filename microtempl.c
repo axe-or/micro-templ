@@ -89,28 +89,16 @@ struct GlobalState {
 	uint8_t arena_memory[ARENA_MEMORY_SIZE];
 };
 
-typedef struct {
-	char const* data;
-	int len;
-} String;
-
 static int cstring_len(char const* s){
 	int i = 0;
 	while(s[i] != 0){ i += 1; }
 	return i;
 }
 
-#define DICT_KEY_COUNT 512
-
-struct Dict {
-	String keys[DICT_KEY_COUNT];
-	String values[DICT_KEY_COUNT];
-};
-
-void dict_init(Dict* d){
-	__builtin_memset(&d.keys[0], 0, sizeof(String) * DICT_KEY_COUNT);
-	__builtin_memset(&d.values[0], 0, sizeof(String) * DICT_KEY_COUNT);
-}
+typedef struct {
+	char const* data;
+	int len;
+} String;
 
 bool str_eq(String a, String b){
 	if(a.len != b.len){ return false; }
@@ -119,6 +107,25 @@ bool str_eq(String a, String b){
 	}
 	return true;
 }
+
+String str_from(char const* cstr){
+	String s;
+	s.data = cstr;
+	s.len = cstring_len(cstr);
+	return s;
+}
+
+#define DICT_KEY_COUNT 512
+typedef struct {
+	String keys[DICT_KEY_COUNT];
+	String values[DICT_KEY_COUNT];
+} Dict;
+
+void dict_init(Dict* d){
+	__builtin_memset(&d->keys[0], 0, sizeof(String) * DICT_KEY_COUNT);
+	__builtin_memset(&d->values[0], 0, sizeof(String) * DICT_KEY_COUNT);
+}
+
 
 String dict_get(Dict const* d, String key){}
 
